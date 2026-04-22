@@ -30,6 +30,12 @@ public class AddressService {
 
         return AddressMapper.toDto(saved);
     }
+    public List<AddressResponseDTO> getAllAddresses(){
+        List<Address> address = addressRepository.findAll();
+        return address.stream()
+                .map(AddressMapper::toDto)
+                .toList();
+    }
 
     public List<AddressResponseDTO> getUserAddresses(Long userId) {
 

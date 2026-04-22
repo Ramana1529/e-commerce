@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/addresses")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class AddressController {
     private final AddressService addressService;
 
@@ -20,6 +21,10 @@ public class AddressController {
             @Valid @RequestBody AddressRequestDTO requestDTO
     ) {
         return addressService.addAddress(userId, requestDTO);
+    }
+    @GetMapping
+    public List<AddressResponseDTO> getAllAddresses() {
+        return addressService.getAllAddresses();
     }
 
     @GetMapping("/user/{userId}")
