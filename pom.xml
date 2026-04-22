@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.ecommerce</groupId>
-	<artifactId>project</artifactId>
+	<artifactId>e-commerce</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>project</name>
-	<description>Demo project for Spring Boot</description>
+	<name>e-commerce</name>
+	<description>A full-featured e-commerce backend built with Spring Boot, featuring authentication using JWT, product management, cart functionality, and order processing</description>
 	<url/>
 	<licenses>
 		<license/>
