@@ -10,35 +10,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
-@Builder
+@Table(name = "orders")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="orders")
-public class Order {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @JsonIgnore
+@Builder
+public class Order extends BaseEntity {
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-    @JsonIgnore
-    @OneToOne(mappedBy = "order",cascade = CascadeType.ALL)
-    private Payment payment;
-    @JsonIgnore
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
-    @Column(name = "total_price", nullable = false)
-    private BigDecimal totalPrice;
-    @Column(name = "order_date",nullable = false)
-    private LocalDateTime orderDate;
+
     @Column(nullable = false)
+    private BigDecimal totalPrice;
+
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private OrderStatus status;
-    @JsonIgnore
+
+    private String trackingId;
+
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private Payment payment;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
-
 }

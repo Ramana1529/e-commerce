@@ -5,41 +5,34 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-@Builder
 @Entity
-@Table(name="products")
-@Data
+@Table(name = "products", indexes = {
+        @Index(name = "idx_product_name", columnList = "name")
+})
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Builder
+public class Product extends BaseEntity {
+
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
+
+    @Column(nullable = false, length = 1000)
     private String description;
+
     @Column(nullable = false)
     private BigDecimal price;
-    @Column(name = "stock_quantity", nullable = false)
+
+    @Column(nullable = false)
     private Integer stockQuantity;
-    @ManyToOne
+
+    private String imageUrl;
+
+    private Boolean isActive = true;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    public void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    public void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
 }

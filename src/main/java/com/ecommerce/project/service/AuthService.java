@@ -1,14 +1,11 @@
 package com.ecommerce.project.service;
 
 import com.ecommerce.project.dto.request.LoginRequestDTO;
-import com.ecommerce.project.dto.request.RegisterRequestDTO;
 import com.ecommerce.project.dto.response.AuthResponseDTO;
-import com.ecommerce.project.entity.RoleOfUser;
 import com.ecommerce.project.entity.User;
 import com.ecommerce.project.repository.UserRepository;
 import com.ecommerce.project.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

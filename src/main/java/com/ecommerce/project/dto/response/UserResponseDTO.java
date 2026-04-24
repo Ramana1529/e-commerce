@@ -1,11 +1,9 @@
 package com.ecommerce.project.dto.response;
 
 
-import com.ecommerce.project.entity.RoleOfUser;
+import com.ecommerce.project.entity.Role;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
@@ -17,7 +15,7 @@ public class UserResponseDTO {
     private String name;
     private String email;
     private String contactNumber;
-    private RoleOfUser role;
+    private Role role;
     private LocalDateTime createdAt;
 
 }

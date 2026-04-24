@@ -2,7 +2,7 @@ package com.ecommerce.project.mapper;
 
 import com.ecommerce.project.dto.request.RegisterRequestDTO;
 import com.ecommerce.project.dto.response.UserResponseDTO;
-import com.ecommerce.project.entity.RoleOfUser;
+import com.ecommerce.project.entity.Role;
 import com.ecommerce.project.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,7 +21,7 @@ public class UserMapper {
                 .name(requestDTO.getName())
                 .email(requestDTO.getEmail())
                 .contactNumber(requestDTO.getContactNumber())
-                .role(RoleOfUser.USER)
+                .role(Role.USER)
                 .createdAt(LocalDateTime.now())
                 .password(passwordEncoder.encode(requestDTO.getPassword()))
                 .build();

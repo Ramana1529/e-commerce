@@ -1,9 +1,8 @@
 package com.ecommerce.project.service;
 
 import com.ecommerce.project.dto.request.RegisterRequestDTO;
-import com.ecommerce.project.dto.request.UserRequestDTO;
 import com.ecommerce.project.dto.response.UserResponseDTO;
-import com.ecommerce.project.entity.RoleOfUser;
+import com.ecommerce.project.entity.Role;
 import com.ecommerce.project.entity.User;
 import com.ecommerce.project.mapper.UserMapper;
 import com.ecommerce.project.repository.UserRepository;
@@ -28,7 +27,7 @@ public class UserService {
         User user = userMapper.toEntity(registerRequestDTO);
         user.setPassword(passwordEncoder.encode(registerRequestDTO.getPassword()));
 
-        user.setRole(RoleOfUser.USER); // optional default
+        user.setRole(Role.USER); // optional default
         user.setCreatedAt(LocalDateTime.now());
         User savedUser = userRepository.save(user);
         return userMapper.toDTO(savedUser);
