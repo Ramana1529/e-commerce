@@ -34,4 +34,7 @@ public class Payment extends BaseEntity {
     private String transactionId;
 
     private String paymentGateway;
+
+    @Column(nullable = false)
+    private LocalDateTime paymentDate;
 }
