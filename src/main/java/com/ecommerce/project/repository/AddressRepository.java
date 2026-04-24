@@ -9,5 +9,5 @@ import java.util.Optional;
 public interface AddressRepository extends JpaRepository<Address, Long> {
     List<Address> findByUserId(Long userId);
     Optional<Address> findByIdAndUserId(Long addressId, Long userId);
-
+    void deleteByUserId(Long userId);
 }
