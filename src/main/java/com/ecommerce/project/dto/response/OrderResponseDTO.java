@@ -13,8 +13,9 @@ import java.util.List;
 public class OrderResponseDTO {
     private Long orderId;
     private LocalDateTime orderDate;
-    private OrderStatus status;
+    private String status;
     private BigDecimal totalAmount;
     private List<OrderItemResponseDTO> items;
     private Long addressId;
+    private String paymentStatus;
 }

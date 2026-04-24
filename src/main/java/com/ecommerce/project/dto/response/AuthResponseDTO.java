@@ -3,6 +3,8 @@ package com.ecommerce.project.dto.response;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.Set;
+
 @Builder
 @Data
 public class AuthResponseDTO {
@@ -10,6 +12,6 @@ public class AuthResponseDTO {
     private String type;
     private Long userId;
     private String email;
-    private String role;
+    private Set<String> roles;
     private Long expiresIn;
 }

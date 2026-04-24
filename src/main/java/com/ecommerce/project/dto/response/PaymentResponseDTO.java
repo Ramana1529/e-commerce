@@ -13,9 +13,10 @@ import java.time.LocalDateTime;
 public class PaymentResponseDTO {
     private Long id;
     private Long orderId;
-    private PaymentMethod paymentMethod;
-    private PaymentStatus paymentStatus;
+    private String paymentMethod;
+    private String paymentStatus;
     private LocalDateTime paymentDate;
     private BigDecimal amount;
     private String transactionId;
+    private String currency;
 }

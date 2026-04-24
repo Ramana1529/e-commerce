@@ -13,4 +13,5 @@ public class AddressResponseDTO {
     private String country;
     private String pincode;
     private String contactNumber;
+    private String fullAddress;
 }

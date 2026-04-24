@@ -14,6 +14,8 @@ public class ProductResponseDTO {
     private BigDecimal price;
     private Integer stockQuantity;
     private String categoryName;
+    private String imageUrl;
+    private Boolean inStock;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
