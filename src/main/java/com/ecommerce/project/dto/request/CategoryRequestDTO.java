@@ -2,13 +2,16 @@ package com.ecommerce.project.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class CategoryRequestDTO {
+
     @NotBlank(message = "Category name cannot be empty")
-    @Size(min = 3, max = 50, message = "Category name must be between 3 and 50 characters")
+    @Size(min = 3, max = 50)
     private String name;
 }
