@@ -17,16 +17,21 @@ public class ProductMapper {
                 .category(category)
                 .build();
     }
+
     public static ProductResponseDTO toDto(Product product){
+        if (product == null) return null;
+
         return ProductResponseDTO.builder()
                 .id(product.getId())
                 .name(product.getName())
                 .description(product.getDescription())
                 .stockQuantity(product.getStockQuantity())
                 .price(product.getPrice())
-                .categoryName(product.getCategory().getName())
+                .categoryName(product.getCategory() != null ? product.getCategory().getName() : null)
                 .createdAt(product.getCreatedAt())
                 .updatedAt(product.getUpdatedAt())
+                .inStock(product.getStockQuantity() != null && product.getStockQuantity() > 0)
+                .imageUrl(null)
                 .build();
     }
 }

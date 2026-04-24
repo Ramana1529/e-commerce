@@ -20,6 +20,16 @@ public class AddressMapper {
     }
 
     public static AddressResponseDTO toDto(Address address){
+        if (address == null) return null;
+
+        String fullAddress = String.join(", ",
+                address.getStreet(),
+                address.getCity(),
+                address.getState(),
+                address.getPincode(),
+                address.getCountry()
+        );
+
         return AddressResponseDTO.builder()
                 .id(address.getId())
                 .street(address.getStreet())
@@ -28,6 +38,7 @@ public class AddressMapper {
                 .country(address.getCountry())
                 .pincode(address.getPincode())
                 .contactNumber(address.getContactNumber())
+                .fullAddress(fullAddress)
                 .build();
     }
 }
