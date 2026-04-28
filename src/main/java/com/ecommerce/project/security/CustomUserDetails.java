@@ -2,21 +2,29 @@ package com.ecommerce.project.security;
 
 import com.ecommerce.project.entity.User;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
 
-public class CustomUserDetails implements UserDetails {
+public class CustomUserDetails implements UserDetails{
     private final User user;
 
     public CustomUserDetails(User user) {
         this.user = user;
     }
 
+    public Long getUserId(){
+        return user.getId();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(()->"ROLE_"+user.getRole().name());
+        return user.getRoles()
+                .stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName().name()))
+                .toList();
     }
 
     @Override
