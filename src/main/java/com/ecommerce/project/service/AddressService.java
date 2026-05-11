@@ -3,10 +3,15 @@ import com.ecommerce.project.dto.request.AddressRequestDTO;
 import com.ecommerce.project.dto.response.AddressResponseDTO;
 import com.ecommerce.project.entity.Address;
 import com.ecommerce.project.entity.User;
+import com.ecommerce.project.exception.ResourceNotFoundException;
 import com.ecommerce.project.mapper.AddressMapper;
 import com.ecommerce.project.repository.AddressRepository;
 import com.ecommerce.project.repository.UserRepository;
+import com.ecommerce.project.security.CustomUserDetails;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,14 +22,16 @@ import java.util.stream.Collectors;
 public class AddressService {
     private final AddressRepository addressRepository;
     private final UserRepository userRepository;
-
-    public AddressResponseDTO addAddress(Long userId, AddressRequestDTO requestDTO) {
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
+    private  User getCurrentUser(){
+        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal();
+        return userRepository.findById(userDetails.getUserId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    }
+    @Transactional
+    public AddressResponseDTO createAddress(AddressRequestDTO requestDTO) {
+        User user = getCurrentUser();
         Address address = AddressMapper.toEntity(requestDTO,user);
-        address.setUser(user);
 
         Address saved = addressRepository.save(address);
 
@@ -37,40 +44,48 @@ public class AddressService {
                 .toList();
     }
 
-    public List<AddressResponseDTO> getUserAddresses(Long userId) {
-
-        List<Address> addresses = addressRepository.findByUserId(userId);
-
-        return addresses.stream()
+    public List<AddressResponseDTO> getUserAddresses() {
+        User user = getCurrentUser();
+        return addressRepository.findByUserId(user.getId())
+                .stream()
                 .map(AddressMapper::toDto)
                 .toList();
     }
 
     public AddressResponseDTO getAddressById(Long addressId) {
+        User user = getCurrentUser();
 
-        Address address = addressRepository.findById(addressId)
-                .orElseThrow(() -> new RuntimeException("Address not found"));
+        Address address = addressRepository
+                .findByIdAndUserId(addressId, user.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Address not found"));
 
         return AddressMapper.toDto(address);
     }
 
     public void deleteAddress(Long addressId) {
+        User user = getCurrentUser();
 
-        if (!addressRepository.existsById(addressId)) {
-            throw new RuntimeException("Address not found");
-        }
+        Address address = addressRepository
+                .findByIdAndUserId(addressId, user.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Address not found"));
 
-        addressRepository.deleteById(addressId);
+        addressRepository.delete(address);
     }
-    public AddressResponseDTO updateAddress(AddressRequestDTO addressRequestDTO,Long addressId){
-        Address address = addressRepository.findById(addressId).orElseThrow(()->new RuntimeException("address not found"));
-        address.setStreet(addressRequestDTO.getStreet());
-        address.setCity(addressRequestDTO.getCity());
-        address.setState(addressRequestDTO.getState());
-        address.setPincode(addressRequestDTO.getPincode());
-        address.setCountry(addressRequestDTO.getCountry());
-        address.setContactNumber(addressRequestDTO.getContactNumber());
-        Address savedAddress = addressRepository.save(address);
-        return AddressMapper.toDto(savedAddress);
+    @Transactional
+    public AddressResponseDTO updateAddress(AddressRequestDTO dto,Long addressId){
+        User user = getCurrentUser();
+
+        Address address = addressRepository
+                .findByIdAndUserId(addressId, user.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Address not found"));
+
+        address.setStreet(dto.getStreet());
+        address.setCity(dto.getCity());
+        address.setState(dto.getState());
+        address.setPincode(dto.getPincode());
+        address.setCountry(dto.getCountry());
+        address.setContactNumber(dto.getContactNumber());
+
+        return AddressMapper.toDto(addressRepository.save(address));
     }
 }

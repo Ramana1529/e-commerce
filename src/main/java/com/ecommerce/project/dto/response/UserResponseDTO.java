@@ -15,8 +15,8 @@ public class UserResponseDTO {
     private Long id;
     private String name;
     private String email;
-    private String contactNumber;
-    private Set<String> role;
+    private String phoneNumber;
+    private Set<String> roles;
     private LocalDateTime createdAt;
 
 }

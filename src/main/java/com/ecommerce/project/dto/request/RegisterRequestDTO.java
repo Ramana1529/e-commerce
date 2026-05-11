@@ -27,5 +27,5 @@ public class RegisterRequestDTO {
 
     @NotBlank(message = "Contact number is required")
     @Pattern(regexp = "^[0-9]{10}$")
-    private String contactNumber;
+    private String phoneNumber;
 }

@@ -22,7 +22,7 @@ public class UserMapper {
         return User.builder()
                 .name(requestDTO.getName())
                 .email(requestDTO.getEmail())
-                .phoneNumber(requestDTO.getContactNumber())
+                .phoneNumber(requestDTO.getPhoneNumber())
                 .password(passwordEncoder.encode(requestDTO.getPassword()))
                 .build();
     }
@@ -33,10 +33,10 @@ public class UserMapper {
                 .id(user.getId())
                 .name(user.getName())
                 .email(user.getEmail())
-                .contactNumber(user.getPhoneNumber())
-                .role(user.getRoles() != null
-                        ? user.getRoles().stream().map(role -> role.getName().name()).collect(Collectors.toSet())
-                        : Set.of())
+                .phoneNumber(user.getPhoneNumber())
+                .roles(user.getRoles().stream()
+                        .map(role -> role.getName().name())
+                        .collect(Collectors.toSet()))
                 .createdAt(user.getCreatedAt())
                 .build();
     }

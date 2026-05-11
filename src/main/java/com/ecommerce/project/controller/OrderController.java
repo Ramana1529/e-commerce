@@ -1,8 +1,12 @@
 package com.ecommerce.project.controller;
 
+import com.ecommerce.project.dto.request.OrderRequestDTO;
+import com.ecommerce.project.dto.response.OrderResponseDTO;
 import com.ecommerce.project.entity.Order;
 import com.ecommerce.project.service.OrderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,31 +14,30 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/orders")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class OrderController {
 
     private final OrderService orderService;
 
-    // ✅ Place Order
-    @PostMapping("/place")
-    public Order placeOrder(@RequestParam Long userId,
-                            @RequestParam Long addressId) {
-        return orderService.placeOrder(userId, addressId);
+    @PostMapping
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public OrderResponseDTO placeOrder(@RequestBody @Valid OrderRequestDTO request) {
+        return orderService.placeOrder(request.getAddressId());
+    }
+    @GetMapping
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public List<OrderResponseDTO> getUserOrders() {
+        return orderService.getUserOrders();
     }
 
-    // ✅ Get all orders of user
-    @GetMapping("/user/{userId}")
-    public List<Order> getAllOrders(@PathVariable Long userId) {
-        return orderService.getUserOrders(userId);
-    }
-
-    // ✅ Get single order
     @GetMapping("/{orderId}")
-    public Order getSingleOrder(@PathVariable Long orderId) {
+    @PreAuthorize("hasRole('ADMIN') or @orderSecurity.isOwner(#orderId, authentication)")
+    public OrderResponseDTO getSingleOrder(@PathVariable Long orderId) {
         return orderService.getSingleOrder(orderId);
     }
 
-    // ✅ NEW: Cancel Order
-    @DeleteMapping("/{orderId}/cancel")
+    @DeleteMapping("/{orderId}")
+    @PreAuthorize("hasRole('ADMIN') or @orderSecurity.isOwner(#orderId, authentication)")
     public String cancelOrder(@PathVariable Long orderId) {
         orderService.cancelOrder(orderId);
         return "Order cancelled successfully";

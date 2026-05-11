@@ -23,8 +23,28 @@ public class Cart extends BaseEntity {
     private User user;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CartItem> items = new ArrayList<>();
+    private List<CartItem> items;
 
     @Column(nullable = false)
-    private BigDecimal totalPrice = BigDecimal.ZERO;
+    private BigDecimal totalPrice;
+
+    @PrePersist
+    public void prePersist() {
+        if (this.items == null) {
+            this.items = new ArrayList<>();
+        }
+        if (this.totalPrice == null) {
+            this.totalPrice = BigDecimal.ZERO;
+        }
+    }
+
+    @PostLoad
+    public void postLoad() {
+        if (this.items == null) {
+            this.items = new ArrayList<>();
+        }
+        if (this.totalPrice == null) {
+            this.totalPrice = BigDecimal.ZERO;
+        }
+    }
 }

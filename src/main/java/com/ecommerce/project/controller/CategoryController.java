@@ -1,8 +1,12 @@
 package com.ecommerce.project.controller;
 
+import com.ecommerce.project.dto.request.CategoryRequestDTO;
+import com.ecommerce.project.dto.response.CategoryResponseDTO;
 import com.ecommerce.project.entity.Category;
 import com.ecommerce.project.service.CategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,37 +14,36 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/categories")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class CategoryController {
 
     private final CategoryService categoryService;
 
-    // ✅ Create
     @PostMapping
-    public Category createCategory(@RequestBody Category category) {
-        return categoryService.createCategory(category);
+    @PreAuthorize("hasRole('ADMIN')")
+    public CategoryResponseDTO createCategory(@Valid @RequestBody CategoryRequestDTO categoryRequestDTO) {
+        return categoryService.createCategory(categoryRequestDTO);
     }
 
-    // ✅ Get all
     @GetMapping
-    public List<Category> getAllCategories() {
+    public List<CategoryResponseDTO> getAllCategories() {
         return categoryService.getAllCategories();
     }
 
-    // ✅ Get by ID
     @GetMapping("/{id}")
-    public Category getById(@PathVariable Long id) {
+    public CategoryResponseDTO getById(@PathVariable Long id) {
         return categoryService.getById(id);
     }
 
-    // ✅ Update
     @PutMapping("/{id}")
-    public Category updateCategory(@RequestBody Category category,
-                                   @PathVariable Long id) {
-        return categoryService.updateCategory(category, id);
+    @PreAuthorize("hasRole('ADMIN')")
+    public CategoryResponseDTO updateCategory(@Valid @RequestBody CategoryRequestDTO dto,
+                                              @PathVariable Long id) {
+        return categoryService.updateCategory(dto, id);
     }
 
-    // ✅ Delete
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String deleteCategory(@PathVariable Long id) {
         return categoryService.deleteCategoryById(id);
     }

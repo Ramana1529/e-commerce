@@ -15,6 +15,6 @@ public class PaymentRequestDTO {
     @NotNull(message = "Order ID is required")
     private Long orderId;
 
-    @NotBlank(message = "Payment method is required")
-    private String paymentMethod; // "UPI", "CARD"
+    @NotNull(message = "Payment method is required")
+    private PaymentMethod paymentMethod;
 }

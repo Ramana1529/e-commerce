@@ -29,7 +29,7 @@ public class Product extends BaseEntity {
     private Integer stockQuantity;
 
     private String imageUrl;
-
+    @Column(nullable = false)
     private Boolean isActive = true;
 
     @ManyToOne(fetch = FetchType.LAZY)
